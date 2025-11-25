@@ -32,8 +32,7 @@ build/
 ### VS Code ###
 .vscode/
 .mvn
-.env
 target
 
-
-/application-secret.properties
+mysql_data
+/mysql_data
