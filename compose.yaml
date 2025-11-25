@@ -1,0 +1,24 @@
+x-common-env-vars: &common-env-vars
+  DB_USER: Wordle
+  DB_PASSWORD: Wordle12345
+  DB_NAME: WordleDB
+
+services:
+  mysql:
+    image: mysql:latest
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=Wordle12345
+      - MYSQL_DATABASE=WordleDB
+      - MYSQL_USER=Wordle
+      - MYSQL_PASSWORD=Wordle12345
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${DB_USER}", "-p${DB_PASSWORD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
