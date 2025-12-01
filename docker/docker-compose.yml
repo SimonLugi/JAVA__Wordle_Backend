@@ -1,7 +1,7 @@
 services:
   wordle-database:
     container_name: wordle-database
-    image: mysql:latest
+    image: mysql:9.5
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: ${SQL_PASSWORD}
