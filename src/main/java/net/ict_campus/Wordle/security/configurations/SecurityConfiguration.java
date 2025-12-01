@@ -1,6 +1,5 @@
 package net.ict_campus.Wordle.security.configurations;
 
-import jakarta.servlet.DispatcherType;
 import net.ict_campus.Wordle.security.security.JwtAuthenticationFilter;
 import net.ict_campus.Wordle.security.security.RateLimitingFilter;
 import net.ict_campus.Wordle.security.security.SecurityConstant;

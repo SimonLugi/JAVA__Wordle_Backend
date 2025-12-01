@@ -1,0 +1,49 @@
+services:
+  wordle-database:
+    container_name: wordle-database
+    image: mysql:latest
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${SQL_PASSWORD}
+      MYSQL_DATABASE: ${SQL_DB}
+      MYSQL_USER: ${SQL_USER}
+      MYSQL_PASSWORD: ${SQL_PASSWORD}
+    ports:
+      - "3308:3306"
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${DB_USER}", "-p${DB_PASSWORD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      wordleNet:
+        ipv4_address: 172.38.0.2
+
+
+  wordle-backend:
+    container_name: wordle-backend
+    image: themodcrafttmc/wordle-backend:latest
+    restart: unless-stopped
+    environment:
+      SQL_USER: ${SQL_USER}
+      SQL_PASSWORD: ${SQL_PASSWORD}
+      SQL_DB: ${SQL_DB}
+      SQL_HOST: wordle-database
+      SQL_PORT: 3306
+    depends_on:
+      wordle-database:
+        condition: service_healthy
+    ports:
+      - "8081:8080"
+    networks:
+      wordleNet:
+        ipv4_address: 172.38.0.3
+
+networks:
+  wordleNet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.38.0.0/16

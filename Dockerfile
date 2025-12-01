@@ -5,7 +5,7 @@ FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
 # Copy the jar file
-COPY target/SchnuppiTool-0.0.1-SNAPSHOT.jar app.jar
+COPY target/Wordle-0.0.1-SNAPSHOT.jar app.jar
 
 # Expose application port (default 8080)
 EXPOSE 8080

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Table(name = "word")
 @Getter
 @Setter
+//@NoArgsConstructor @AllArgsConstructor
 public class Word{
 
     @Id

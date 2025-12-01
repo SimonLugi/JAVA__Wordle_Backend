@@ -45,27 +45,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        try {
-            if (authorizationHeader.startsWith(firstUserSecretKey)) {
-                // If no players exist yet, create the first dummy player user
-                if (playerRepository.count() == 0) {
-                    Player dummyUser = new Player();
-                    dummyUser.setUsername("chefchoch");
-                    dummyUser.setPassword("chefchoch12345");
+        //Could be commented in if signup should be "Admin / Existing user onely" (For creating first user)
+        if (false /*authorizationHeader.startsWith(firstUserSecretKey)*/) {
+            // If no players exist yet, create the first dummy player user
+            if (playerRepository.count() == 0) {
+                Player dummyUser = new Player();
+                dummyUser.setUsername("chefchoch");
+                dummyUser.setPassword("chefchoch12345");
 
-                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                            dummyUser,
-                            dummyUser.getPassword(),
-                            dummyUser.getAuthorities()
-                    );
-                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                    // Continue the filter chain after setting authentication
-                    filterChain.doFilter(request, response);
-                    return; // Exit early, no need to process further filters
-                }
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                        dummyUser,
+                        dummyUser.getPassword(),
+                        dummyUser.getAuthorities()
+                );
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                // Continue the filter chain after setting authentication
+                filterChain.doFilter(request, response);
+                return; // Exit early, no need to process further filters
             }
-        } catch (Exception e) {
-            System.out.println(e);
         }
 
 
