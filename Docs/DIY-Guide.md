@@ -182,6 +182,15 @@ The Password and Schemas can be changed (Behind the ":" )
 >
 > To know is that the env Variabels are written in Upper case
 
+
+> <picture>
+>   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/Mqxx/GitHub-Markdown/main/blockquotes/badge/light-theme/info.svg">
+>   <img alt="Note" src="https://raw.githubusercontent.com/Mqxx/GitHub-Markdown/main/blockquotes/badge/dark-theme/info.svg">
+> </picture><br>
+>
+> You will need to hardcode your root credentials in to the fallback of the env vars becaus spring is when it trys to pars the var not in as state to load the vars from Docker
+
+
 Also in the ```application.properties``` you need to change following things:
 
 <details>
@@ -203,6 +212,7 @@ spring.datasource.password=${SQL_PASSWORD:mySqlPassword}
     <summary>Spring datasource Configurations</summary>
 
 Change your springboot and hibernate settings to the following values / configuration:
+
 
 ```properties
 # Database Configuration
