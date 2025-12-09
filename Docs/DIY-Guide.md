@@ -191,7 +191,10 @@ The first thing is the Connector (JDBC) the next part is the Database type (mysq
 next you will find your host probably "localhost" change this to a var like "SQL_HOST"
 
 ```properties
-spring.datasource.url=jdbc:mysql://${SQL_HOST:localhost}:${SQL_PORT:3306}/${SQL_DB:WordleDB}?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+spring.datasource.url=jdbc:mysql://${SQL_HOST:localhost}:${SQL_PORT:3306}/${SQL_DB:yourDatabaseName}?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+
+spring.datasource.username=${SQL_USER:mySqlUser}
+spring.datasource.password=${SQL_PASSWORD:mySqlPassword}
 ```
 
 </details>
@@ -215,6 +218,10 @@ spring.jpa.driverClassName=com.mysql.cj.jdbc.Driver
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 ```
 
+you may need to add this this line to the test/resources/application.properties
+```properties
+spring.flyway.enabled=false
+```
 </details>
 
 # Step 4 Building the Backend:
@@ -229,6 +236,10 @@ spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 > @EnableJpaRepositories(basePackages =  {"net.ict_campus.Wordle.domain.player","net.ict_campus.Wordle.domain.word"}) //<-- Your reposetory location
 > @EntityScan(basePackages = "net.ict_campus.Wordle.domain") //<-- Your package
 > public class WordleApplication {} // <-- Main class
+> ```
+> If you have a nother folder structur you may need to define it like this:
+> ```java 
+> @EntityScan(basePackages = "net.ict_campus.*")
 > ```
 
 To compile your Application to a Jar please follow the guide for your Compiler.
@@ -303,9 +314,9 @@ installation beside a Container run time
 For this you will need to run the docker build command:
 
 ```shell
-docker buildx build --platform linux/amd64,linux/arm64 ^
-  -t YOUR_DOCKER_USERNAME/YOUR_DOCKER_IMAGE_NAME:latest ^
-  -t YOUR_DOCKER_USERNAME/YOUR_DOCKER_IMAGE_NAME:1.0.1 ^
+docker buildx build --platform linux/amd64,linux/arm64 \
+  -t YOUR_DOCKER_USERNAME/YOUR_DOCKER_IMAGE_NAME:latest \
+  -t YOUR_DOCKER_USERNAME/YOUR_DOCKER_IMAGE_NAME:1.0.1 \
   --push .
 ```
 
@@ -335,7 +346,7 @@ services:
     image: mysql:9.5
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: ${SQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${SQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${SQL_DB}
       MYSQL_USER: ${SQL_USER}
       MYSQL_PASSWORD: ${SQL_PASSWORD}
@@ -358,6 +369,8 @@ services:
     image: YOUR_DOCKER_USERNAME/YOUR_DOCKER_IMAGE_NAME:latest
     restart: unless-stopped
     environment:
+      SQL_ROOT_USER: ${SQL_ROOT_USER}
+      SQL_ROOT_PASSWORD: ${SQL_ROOT_PASSWORD}
       SQL_USER: ${SQL_USER}
       SQL_PASSWORD: ${SQL_PASSWORD}
       SQL_DB: ${SQL_DB}
